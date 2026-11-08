@@ -13,7 +13,11 @@ uber-india-bi/
 │   └── processed/               # CSV opcionales de salida
 ├── docs/
 │   ├── capturas/                # capturas de validación y diagrama ER
-│   └── resultados/              # salida de la validación (validacion.txt)                     
+│   └── resultados/              
+├── dashboard/                      
+│   ├── app.py                     
+│   └── .streamlit/
+│       └── secrets.toml.example                      
 ├── etl/
 │   ├── cancelaciones.py
 │   ├── config.py
@@ -123,4 +127,12 @@ sudo -u postgres psql -d bd_uber_india -f sql/03_views.sql
 # Ejecutar la validación y guardar la evidencia
 mkdir -p docs/resultados
 sudo -u postgres psql -d bd_uber_india -f sql/04_validacion.sql | tee docs/resultados/validacion.txt
+```
+
+### 6. Ejecutar el dashboard
+Antes de ejecutar el código hay que configurar secrets.toml.example con la contraseña de la BD y borrar el .example.
+Una vez realizado lo anterior ejecutar:
+
+```bash
+streamlit run dashboard/app.py
 ```
