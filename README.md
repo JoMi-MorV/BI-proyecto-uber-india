@@ -11,7 +11,9 @@ uber-india-bi/
 │   │   └── uber_india_2024.csv
 │   ├── staging/                 # archivos intermedios generados por el ETL
 │   └── processed/               # CSV opcionales de salida
-├── docs/                        # documentación y recursos
+├── docs/
+│   ├── capturas/                # capturas de validación y diagrama ER
+│   └── resultados/              # salida de la validación (validacion.txt)                     
 ├── etl/
 │   ├── cancelaciones.py
 │   ├── config.py
@@ -28,7 +30,8 @@ uber-india-bi/
 ├── sql/
 │   ├── 01_ddl.sql
 │   ├── 02_seed.sql
-│   └── 03_views.sql
+│   ├── 03_views.sql
+│   └── 04_validacion.sql
 ├── ejecutar_etl.py              # punto de entrada del ETL
 ├── requirements.txt
 └── README.md
@@ -107,4 +110,17 @@ Para transformar sin consultar ni escribir en PostgreSQL, y exportar CSV de revi
 
 ```bash
 python ejecutar_etl.py --paso transform --sin-bd --exportar-csv
+```
+
+### 5. Validación
+
+Requiere que el ETL ya haya cargado `fact_bookings`. Crea las vistas analíticas y ejecuta las pruebas de integridad y de KPIs:
+
+```bash
+# Crear las vistas analíticas
+sudo -u postgres psql -d bd_uber_india -f sql/03_views.sql
+
+# Ejecutar la validación y guardar la evidencia
+mkdir -p docs/resultados
+sudo -u postgres psql -d bd_uber_india -f sql/04_validacion.sql | tee docs/resultados/validacion.txt
 ```
