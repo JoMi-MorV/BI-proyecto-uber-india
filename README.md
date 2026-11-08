@@ -76,16 +76,14 @@ psql -U postgres -h localhost -p 5432 -d BD_UBER_INDIA -f sql/02_seed.sql
 
 ### 3. Configurar la conexión
 
-El ETL lee la contraseña de la variable de entorno `DB_PASSWORD`. Para introducirla sin mostrarla en pantalla ni escribirla en el historial del shell, usa:
+El ETL lee la contraseña de la variable de entorno `DB_PASSWORD`. Configúrala en la terminal actual antes de ejecutar el ETL:
 
 ```bash
-read -rsp "Contraseña de PostgreSQL: " DB_PASSWORD
-printf '\n'
-export DB_PASSWORD
+export DB_PASSWORD='tu_contraseña'
 export DB_USER=postgres DB_HOST=localhost DB_PORT=5432 DB_NAME=BD_UBER_INDIA
 ```
 
-La contraseña queda disponible solo en esa terminal. El proyecto no carga automáticamente el archivo `.env`; hay que exportar las variables en cada terminal nueva.
+Reemplaza `tu_contraseña` por la contraseña real de PostgreSQL. Este método funcionó para completar la carga. La contraseña queda disponible solo en esa terminal, pero el comando puede guardarse en el historial del shell: no uses una contraseña que no quieras dejar en el historial y nunca subas ni compartas el valor real. El proyecto no carga automáticamente el archivo `.env`; hay que exportar las variables en cada terminal nueva.
 
 ### 4. Ejecutar el ETL completo
 
